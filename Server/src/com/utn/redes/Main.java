@@ -15,12 +15,15 @@ public class Main {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             System.out.println("[OK]\n");
-            Socket clientSocket = serverSocket.accept();
-            idSession++;
-            new ClientHandlerThread(clientSocket, idSession);
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                idSession++;
+                new ClientHandlerThread(clientSocket, idSession);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
     }
 }

@@ -1,10 +1,12 @@
 package com.utn.redes;
 
+import javax.xml.crypto.Data;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class ClientHandlerThread implements Runnable{
 
@@ -21,18 +23,21 @@ public class ClientHandlerThread implements Runnable{
 
     @Override
     public void run() {
+
+        Scanner scanner = new Scanner(System.in);
         try {
             DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String message = "";
             while(message != null){
+                message = bufferedReader.readLine();
                 if ("X".equalsIgnoreCase(message)){
                     break;
+                }else {
+                    printClientMessage(message);
+                    System.out.println("Enter response: ");
+                    dataOutputStream.writeUTF(scanner.nextLine() + "\n");
                 }
-                message = bufferedReader.readLine();
-                String clientMessage = formatClientMessage(message);
-                System.out.println(clientMessage);
-                dataOutputStream.writeUTF(clientMessage);
             }
 
             clientSocket.close();
@@ -42,9 +47,10 @@ public class ClientHandlerThread implements Runnable{
         }
 
     }
-
-
-    public String formatClientMessage(String text){
-        return "[Client " + idSession + "]==> " + text+ "\n";
+    
+    public void printClientMessage(String text){
+        System.out.println("[Client " + idSession + "]==> " + text+ "\n");
     }
+
+
 }
