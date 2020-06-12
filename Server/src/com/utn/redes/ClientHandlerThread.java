@@ -31,7 +31,7 @@ public class ClientHandlerThread implements Runnable{
             String message = "";
 
             //Send a message to the user indicating that the connection has been stablished
-            dataOutputStream.writeUTF("Connection established \n");
+            dataOutputStream.writeUTF("Connection established. \n");
 
             while(message != null){
                 message = bufferedReader.readLine();
@@ -40,11 +40,19 @@ public class ClientHandlerThread implements Runnable{
                 }else {
                     printClientMessage(message);
                     System.out.println("Enter response: ");
-                    dataOutputStream.writeUTF(scanner.nextLine() + "\n");
+                    message = scanner.nextLine();
+                    if(message.equalsIgnoreCase("X")) {
+                        dataOutputStream.writeUTF("Connection finished by the server.");
+                        disconnect();
+                        System.out.println("Connection finished");
+                        message = null;
+                    }else{
+                        dataOutputStream.writeUTF(message);
+                    }
                 }
             }
 
-            clientSocket.close();
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,5 +64,11 @@ public class ClientHandlerThread implements Runnable{
         System.out.println("[Client " + idSession + "]==> " + text+ "\n");
     }
 
+    public void disconnect(){
+        try {
+            clientSocket.close();
+        } catch (IOException e) {
 
+        }
+    }
 }
