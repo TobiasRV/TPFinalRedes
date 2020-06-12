@@ -29,6 +29,10 @@ public class ClientHandlerThread implements Runnable{
             DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String message = "";
+
+            //Send a message to the user indicating that the connection has been stablished
+            dataOutputStream.writeUTF("Connection established \n");
+
             while(message != null){
                 message = bufferedReader.readLine();
                 if ("X".equalsIgnoreCase(message)){

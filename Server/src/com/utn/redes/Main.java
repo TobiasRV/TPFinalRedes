@@ -9,14 +9,16 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Integer port = 8888;
+        Integer port = 9090;
         Integer idSession = 0;
         System.out.println("Starting server...\n");
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             System.out.println("[OK]\n");
             while (true) {
+
                 Socket clientSocket = serverSocket.accept();
+                System.out.println("New incoming connection");
                 idSession++;
                 new ClientHandlerThread(clientSocket, idSession);
             }
