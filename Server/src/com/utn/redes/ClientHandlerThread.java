@@ -48,6 +48,7 @@ public class ClientHandlerThread implements Runnable{
                         message = null;
                     }else{
                         dataOutputStream.writeUTF(message);
+
                     }
                 }
             }

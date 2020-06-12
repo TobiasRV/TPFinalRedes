@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Integer port = 9090;
+        Integer port = 3000;
         Integer idSession = 0;
         System.out.println("Starting server...\n");
         try {

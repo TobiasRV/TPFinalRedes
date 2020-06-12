@@ -32,8 +32,6 @@ public class Client {
             while(socket.isConnected()){
                 System.out.println("Ingrese el mensaje: ");
                 message = scanner.nextLine();
-                System.out.println(message);
-                so
                 dataOutputStream.writeUTF(message);
                 printServerMessage(bufferedReader.readLine());
             }
