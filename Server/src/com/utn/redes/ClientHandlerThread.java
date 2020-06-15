@@ -1,10 +1,6 @@
 package com.utn.redes;
 
-import javax.xml.crypto.Data;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -25,29 +21,45 @@ public class ClientHandlerThread implements Runnable {
     public void run() {
 
         Scanner scanner = new Scanner(System.in);
+        String message;
         try {
-            DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
+            //Initializing the input and output
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String message = "";
 
-            //Send a message to the user indicating that the connection has been stablished
-            dataOutputStream.writeUTF("Connection established. \n");
+            //Send a message to the client indicating that the connection was established
+            bufferedWriter.write("Connection established.");
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
+            //Printing the message from the server indicating that the connection was established
             message = bufferedReader.readLine();
             this.printClientMessage(message);
+            //True if the socket connected and is not closed
             while ((clientSocket.isConnected()) && (!clientSocket.isClosed())) {
+                //Read the message from the user
                 message = bufferedReader.readLine();
 
-                if ("X".equalsIgnoreCase(message)) {
+                //If the message sent by the user is x the server disconnects if not print the message and input a response
+                if ("X".equalsIgnoreCase(message)){
+                    bufferedWriter.write("Connection finished by the user.");
+                    bufferedWriter.newLine();
+                    bufferedWriter.flush();
+                    disconnect();
+                    System.out.println("Connection finished by the user");
                     break;
-                } else {
+                }else {
                     printClientMessage(message);
-
                     System.out.println("Enter response: ");
                     message = scanner.nextLine();
+                    //If the response is not x the response is send if not send a notification that the server finish the connection and disconnect the socket
                     if (!message.equalsIgnoreCase("X")) {
-                        dataOutputStream.writeUTF(message);
+                        bufferedWriter.write(message);
+                        bufferedWriter.newLine();
+                        bufferedWriter.flush();
                     } else {
-                        dataOutputStream.writeUTF("Connection finished by the server.");
+                        bufferedWriter.write("Connection finished by the server.");
+                        bufferedWriter.newLine();
+                        bufferedWriter.flush();
                         disconnect();
                         System.out.println("Connection finished");
                         break;
@@ -73,7 +85,7 @@ public class ClientHandlerThread implements Runnable {
         try {
             clientSocket.close();
         } catch (IOException e) {
-
+            System.out.println("Error cerrando el servidor");
         }
     }
 }

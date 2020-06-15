@@ -1,9 +1,6 @@
 package com.utn.redes;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -18,28 +15,45 @@ public class Client {
 
     public void startClient(){
         Scanner scanner = new Scanner(System.in);
-        String message = "";
+        String message;
         try {
-
-            DataOutputStream dataOutputStream = new DataOutputStream(this.socket.getOutputStream());
+            //Initializing the input and output
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            //Print the message send by the server
+
             System.out.println("Client started successfully");
+            //Printing the message from the server indicating that the connection was established
             message = bufferedReader.readLine();
             this.printServerMessage(message);
-            dataOutputStream.writeUTF("Connection established. \n");
-            // TODO cliente no envia mensajes
+            //Send a message to the server indicating that the connection was established
+            bufferedWriter.write("Connection established.");
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
+            //True if the socket connected and is not closed
             while((socket.isConnected()) && (!socket.isClosed())){
                 System.out.println("Ingrese el mensaje: ");
                 message = scanner.nextLine();
-                System.out.println(message);
-                dataOutputStream.writeUTF(message);
-                printServerMessage(bufferedReader.readLine());
+                bufferedWriter.write(message);
+                bufferedWriter.newLine();
+                bufferedWriter.flush();
+                //If the message is not x print the message from the server, and if it's x break the while
+                if(!message.equalsIgnoreCase("X")){
+                    message = bufferedReader.readLine();
+                    if(!message.equalsIgnoreCase("Connection finished by the server.")){
+                        printServerMessage(message);
+                    }else{
+                        this.disconnect();
+                        break;
+                    }
+                }else{
+                    this.disconnect();
+                    break;
+                }
             }
-            socket.close();
+            this.disconnect();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Disconnected from the server");
         }
 
 
@@ -49,4 +63,11 @@ public class Client {
         System.out.println("[Server]==> " + text + "\n");
     }
 
+    public void disconnect() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("Error cerrando el servidor");
+        }
+    }
 }

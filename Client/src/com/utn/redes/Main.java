@@ -14,20 +14,24 @@ public class Main {
         Integer port;
         Scanner scanner = new Scanner(System.in);
 
+        while (true) {
+            // TODO arreglar scanner salteandoce el scan del ip la segunda vez que llega
+            //Enter the ip and port of the server to connect
+            System.out.println("Enter the server IP: ");
+            ip = scanner.nextLine();
+            System.out.println("Enter the port: ");
+            port = scanner.nextInt();
 
-        System.out.println("Enter the server IP: ");
-        ip = scanner.nextLine();
-        System.out.println("Enter the port: ");
-        port = scanner.nextInt();
+            System.out.println("Attempting to connect to server " + ip + " on the port: " + port + "\n");
 
-        System.out.println("Attempting to connect to server " + ip + " on the port: " + port + "\n");
-
-        try {
-            Client client = new Client(new Socket(ip,port));
-            client.startClient();
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                //create a new client with the socket pointing to the server
+                Client client = new Client(new Socket(ip, port));
+                //start the interactions with the server
+                client.startClient();
+            } catch (IOException e) {
+                System.out.println("Error connecting to the server.");
+            }
         }
-
     }
 }
