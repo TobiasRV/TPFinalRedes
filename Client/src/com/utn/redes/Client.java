@@ -27,15 +27,15 @@ public class Client {
             System.out.println("Client started successfully");
             message = bufferedReader.readLine();
             this.printServerMessage(message);
-
+            dataOutputStream.writeUTF("Connection established. \n");
             // TODO cliente no envia mensajes
-            while(socket.isConnected()){
+            while((socket.isConnected()) && (!socket.isClosed())){
                 System.out.println("Ingrese el mensaje: ");
                 message = scanner.nextLine();
+                System.out.println(message);
                 dataOutputStream.writeUTF(message);
                 printServerMessage(bufferedReader.readLine());
             }
-
             socket.close();
 
         } catch (IOException e) {

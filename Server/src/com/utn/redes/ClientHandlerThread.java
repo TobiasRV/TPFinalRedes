@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ClientHandlerThread implements Runnable{
+public class ClientHandlerThread implements Runnable {
 
     Socket clientSocket;
     Integer idSession;
@@ -32,40 +32,44 @@ public class ClientHandlerThread implements Runnable{
 
             //Send a message to the user indicating that the connection has been stablished
             dataOutputStream.writeUTF("Connection established. \n");
-
-            while(message != null){
+            message = bufferedReader.readLine();
+            this.printClientMessage(message);
+            while ((clientSocket.isConnected()) && (!clientSocket.isClosed())) {
                 message = bufferedReader.readLine();
-                if ("X".equalsIgnoreCase(message)){
+
+                if ("X".equalsIgnoreCase(message)) {
                     break;
-                }else {
+                } else {
                     printClientMessage(message);
+
                     System.out.println("Enter response: ");
                     message = scanner.nextLine();
-                    if(message.equalsIgnoreCase("X")) {
+                    if (!message.equalsIgnoreCase("X")) {
+                        dataOutputStream.writeUTF(message);
+                    } else {
                         dataOutputStream.writeUTF("Connection finished by the server.");
                         disconnect();
                         System.out.println("Connection finished");
-                        message = null;
-                    }else{
-                        dataOutputStream.writeUTF(message);
-
+                        break;
                     }
+
                 }
+
+
             }
 
-
-
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("User disconnect");
+            this.disconnect();
         }
 
     }
-    
-    public void printClientMessage(String text){
-        System.out.println("[Client " + idSession + "]==> " + text+ "\n");
+
+    public void printClientMessage(String text) {
+        System.out.println("[Client " + idSession + "]==> " + text + "\n");
     }
 
-    public void disconnect(){
+    public void disconnect() {
         try {
             clientSocket.close();
         } catch (IOException e) {
