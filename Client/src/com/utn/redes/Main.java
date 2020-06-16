@@ -12,9 +12,9 @@ public class Main {
     public static void main(String[] args) {
         String ip, message;
         Integer port;
-        Scanner scanner = new Scanner(System.in);
 
         while (true) {
+            Scanner scanner = new Scanner(System.in);
             // TODO arreglar scanner salteandoce el scan del ip la segunda vez que llega
             //Enter the ip and port of the server to connect
             System.out.println("Enter the server IP: ");
