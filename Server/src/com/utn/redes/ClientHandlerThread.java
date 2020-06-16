@@ -40,14 +40,14 @@ public class ClientHandlerThread implements Runnable {
                 message = bufferedReader.readLine();
 
                 //If the message sent by the user is x the server disconnects if not print the message and input a response
-                if ("X".equalsIgnoreCase(message)){
+                if ("X".equalsIgnoreCase(message)) {
                     bufferedWriter.write("Connection finished by the user.");
                     bufferedWriter.newLine();
                     bufferedWriter.flush();
                     disconnect();
                     System.out.println("Connection finished by the user");
                     break;
-                }else {
+                } else {
                     printClientMessage(message);
                     System.out.println("Enter response: ");
                     message = scanner.nextLine();
@@ -64,14 +64,10 @@ public class ClientHandlerThread implements Runnable {
                         System.out.println("Connection finished");
                         break;
                     }
-
                 }
-
-
             }
-
         } catch (IOException e) {
-            System.out.println("User disconnect");
+            System.out.println("User disconnected");
             this.disconnect();
         }
 
@@ -85,7 +81,7 @@ public class ClientHandlerThread implements Runnable {
         try {
             clientSocket.close();
         } catch (IOException e) {
-            System.out.println("Error cerrando el servidor");
+            System.out.println("Error trying to close the server\n");
         }
     }
 }

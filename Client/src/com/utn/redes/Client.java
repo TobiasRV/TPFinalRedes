@@ -31,7 +31,7 @@ public class Client {
             bufferedWriter.flush();
             //True if the socket connected and is not closed
             while((socket.isConnected()) && (!socket.isClosed())){
-                System.out.println("Ingrese el mensaje: ");
+                System.out.println("Enter the message: ");
                 message = scanner.nextLine();
                 bufferedWriter.write(message);
                 bufferedWriter.newLine();
@@ -67,7 +67,7 @@ public class Client {
         try {
             socket.close();
         } catch (IOException e) {
-            System.out.println("Error cerrando el servidor");
+            System.out.println("Error trying to disconnect\n");
         }
     }
 }
