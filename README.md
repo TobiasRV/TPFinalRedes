@@ -6,7 +6,7 @@
 java -jar <Direccion del archivo .jar>
   
 **Desde Intellij**
-Importar el servido y cliente como projectos separados
+Importar el servidor y cliente como proyectos separados
 
 [Programa Funcionando](https://imgur.com/a/IWLsfnb)
 
