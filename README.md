@@ -8,6 +8,8 @@ java -jar <Direccion del archivo .jar>
 **Desde Intellij**
 Importar el servido y cliente como projectos separados
 
+[Programa Funcionando] (https://imgur.com/a/IWLsfnb)
+
 **Cuestionario**
 
 - **¿Qué es un puerto?**
