@@ -7,18 +7,25 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        String ip, message;
+        String ip, message, scannedPort;
         Integer port;
 
         while (true) {
             Scanner scanner = new Scanner(System.in);
 
             //Enter the ip and port of the server to connect
-            System.out.println("Enter the server IP: ");
+            System.out.println("Enter the server IP (default = localhost): ");
             ip = scanner.nextLine();
-            System.out.println("Enter the port: ");
-            port = scanner.nextInt();
-
+            if(ip.isEmpty()){
+                ip = "localhost";
+            }
+            System.out.println("Enter the port (default 3000): ");
+            scannedPort = scanner.nextLine();
+            if(scannedPort.isEmpty()){
+                port = 3000;
+            }else{
+                port = Integer.valueOf(scannedPort);
+            }
             System.out.println("Attempting to connect to server " + ip + " on the port: " + port + "\n");
 
             try {
