@@ -8,7 +8,7 @@ java -jar <Direccion del archivo .jar>
 **Desde Intellij**
 Importar el servido y cliente como projectos separados
 
-[Programa Funcionando] (https://imgur.com/a/IWLsfnb)
+[Programa Funcionando](https://imgur.com/a/IWLsfnb)
 
 **Cuestionario**
 
